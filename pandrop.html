@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PancitoMerge - Addictive Online Puzzle Adventure | PancitoMerge</title>
+    <meta name="description" content="Play PancitoMerge online for free! Combine similar blocks, create powerful merges, and challenge your puzzle skills in this addictive browser game.">
+    <link rel="canonical" href="https://pandropmerge.it.com">
+    <meta name="robots" content="index, follow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Sacramento&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bakery: {
+                            cream: '#FFF8E7',
+                            crust: '#D9B38C',
+                            brown: '#A67C52',
+                            darkBrown: '#6D4C3D',
+                            pink: '#F7CAC9',
+                            sage: '#B2D8B2',
+                            butter: '#F9E076'
+                        }
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'script': ['Sacramento', 'cursive'],
+                        'sans': ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        /* Base styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FFF8E7;
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+            color: #6D4C3D;
+        }
+        
+        /* Wooden elements */
+        .wood-texture {
+            background-color: #A67C52;
+            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+            box-shadow: 
+                inset 0 2px 4px rgba(255,255,255,0.2),
+                inset 0 -2px 4px rgba(0,0,0,0.2);
+        }
+        
+        /* Watercolor effect */
+        .watercolor-bg {
+            background-image: url('https://img.freepik.com/free-photo/vintage-grunge-paper-background_1048-10911.jpg?w=1800&t=st=1711300000~exp=1711300600~hmac=2f9b0d06700f4c4b2cdd4218600be1b1a73cc574db20ed55f8a17bd4e35ea045');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: multiply;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .watercolor-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,248,231,0.7);
+        }
+        
+        /* Vintage typography */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.01em;
+        }
+        
+        .fancy-title {
+            font-family: 'Sacramento', cursive;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            color: #6D4C3D;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        /* Hand drawn elements */
+        .hand-drawn {
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .hand-drawn::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid #A67C52;
+            border-radius: 15px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        .hand-drawn::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 1px dashed #A67C52;
+            border-radius: 12px;
+            opacity: 0.4;
+            z-index: -1;
+        }
+        
+        /* Game container */
+        .game-container {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.15),
+                0 0 0 10px #FFF8E7,
+                0 0 0 11px #D9B38C;
+        }
+        
+        @media (max-width: 768px) {
+            .game-container {
+                height: 450px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .game-container {
+                height: 350px;
+            }
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Content sections */
+        .content-section {
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background-color: #FFF;
+            background-image: url('https://www.transparenttextures.com/patterns/cream-pixels.png');
+            position: relative;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            height: 100%;
+            background-color: #FFF;
+            background-image: url('https://www.transparenttextures.com/patterns/cream-pixels.png');
+            border-radius: 12px;
+            z-index: -1;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .content-section:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        /* Wooden buttons */
+        .wooden-button {
+            background: linear-gradient(to bottom, #A67C52, #8C6142);
+            color: #FFF8E7;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 6px rgba(0,0,0,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.2),
+                inset 0 -2px 0 rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .wooden-button::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .wooden-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 12px rgba(0,0,0,0.15),
+                inset 0 1px 0 rgba(255,255,255,0.2),
+                inset 0 -2px 0 rgba(0,0,0,0.1);
+        }
+        
+        .wooden-button:active {
+            transform: translateY(1px);
+            box-shadow: 
+                0 2px 3px rgba(0,0,0,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.2),
+                inset 0 -1px 0 rgba(0,0,0,0.1);
+        }
+        
+        /* Decorative elements */
+        .bakery-divider {
+            height: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23F7CAC9" fill-opacity="0.5" d="M0,96L120,128C240,160,480,224,720,213.3C960,203,1200,117,1320,74.7L1440,32L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
+            margin: 2rem 0;
+        }
+        
+        .footer-link {
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 2px;
+        }
+        
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: #F7CAC9;
+            transition: width 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: #F7CAC9;
+        }
+        
+        .footer-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Vintage icons */
+        .vintage-check {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background-color: #F7CAC9;
+            border-radius: 50%;
+            color: #6D4C3D;
+            margin-right: 10px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Recipe card style list */
+        .recipe-list {
+            background: url('https://www.transparenttextures.com/patterns/notebook.png');
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid #D9B38C;
+        }
+        
+        .recipe-list li {
+            border-bottom: 1px dashed #D9B38C;
+            padding: 0.5rem 0;
+        }
+        
+        .recipe-list li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="wood-texture text-bakery-cream">
+        <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+            <div>
+                <a href="/" class="flex items-center">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" alt="Bread icon" class="w-12 h-12 mr-3 transform -rotate-6">
+                    <span class="fancy-title text-bakery-cream">PancitoMerge</span>
+                </a>
+            </div>
+            <nav>
+                <ul class="flex space-x-6 font-display">
+                    <li><a href="#play" class="text-bakery-cream hover:text-bakery-butter transition duration-300">Play Now</a></li>
+                    <li><a href="#about" class="text-bakery-cream hover:text-bakery-butter transition duration-300">About</a></li>
+                    <li><a href="#tips" class="text-bakery-cream hover:text-bakery-butter transition duration-300">Tips & Tricks</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero banner -->
+        <section class="watercolor-bg py-12 md:py-20 relative">
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="text-center">
+                    <h1 class="text-4xl md:text-6xl font-display font-bold mb-6 text-bakery-darkBrown relative inline-block">
+                        PancitoMerge
+                        <span class="absolute -bottom-2 left-0 right-0 h-1 bg-bakery-pink rounded-full"></span>
+                    </h1>
+                    <p class="text-xl md:text-2xl font-sans max-w-2xl mx-auto mb-8 text-bakery-darkBrown">
+                        Combine falling blocks strategically to create powerful merges and achieve the highest score in this addictive puzzle adventure!
+                    </p>
+                    <a href="#play" class="wooden-button inline-block text-lg">
+                        Play Now
+                    </a>
+                </div>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#FFF8E7" fill-opacity="1" d="M0,288L48,272C96,256,192,224,288,213.3C384,203,480,213,576,218.7C672,224,768,224,864,202.7C960,181,1056,139,1152,138.7C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-4 py-8">
+            <section id="play" class="mb-20">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-display font-bold mb-4 text-bakery-darkBrown inline-block relative">
+                        Play PancitoMerge Online
+                        <img src="https://cdn-icons-png.flaticon.com/512/3014/3014466.png" alt="Bread icon" class="w-10 h-10 absolute -top-6 -right-12 transform rotate-12">
+                    </h2>
+                    <div class="flex justify-center">
+                        <div class="w-24 h-1 bg-bakery-crust rounded-full"></div>
+                    </div>
+                </div>
+                
+                <div class="game-container hand-drawn">
+                    <iframe src="https://html-classic.itch.zone/html/13071975/index.html" allow="fullscreen" title="PancitoMerge - Free Online Puzzle Game"></iframe>
+                </div>
+            </section>
+
+            <div class="bakery-divider"></div>
+
+            <section id="about" class="grid md:grid-cols-2 gap-10 mb-20">
+                <div class="content-section hand-drawn">
+                    <h2 class="text-2xl font-display font-bold mb-6 text-bakery-darkBrown">About PancitoMerge</h2>
+                    <p class="mb-4">PancitoMerge is an engaging puzzle experience where strategic thinking meets quick reflexes. The goal is simple: drop similar blocks next to each other to merge them into more powerful ones.</p>
+                    <p class="mb-4">As you progress, the game becomes more challenging, requiring careful planning and quick decisions to achieve higher scores and unlock new achievements.</p>
+                    <p>Perfect for quick gaming sessions or extended play, PancitoMerge offers a satisfying and addictive experience for casual gamers and puzzle enthusiasts alike.</p>
+                    <div class="mt-6 text-center">
+                        <a href="#play" class="wooden-button inline-block">
+                            Start Playing!
+                        </a>
+                    </div>
+                </div>
+                <div class="content-section hand-drawn">
+                    <h2 class="text-2xl font-display font-bold mb-6 text-bakery-darkBrown">How to Play</h2>
+                    <ul class="recipe-list space-y-3">
+                        <li class="flex items-center">
+                            <span class="vintage-check">✓</span>
+                            <span>Click or tap to drop blocks into the playing field</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="vintage-check">✓</span>
+                            <span>Merge identical blocks by placing them adjacent to each other</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="vintage-check">✓</span>
+                            <span>Create chains of merges to earn bonus points</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="vintage-check">✓</span>
+                            <span>Plan your moves to avoid filling up the game board</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="vintage-check">✓</span>
+                            <span>Discover special blocks and power-ups as you progress</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="vintage-check">✓</span>
+                            <span>Challenge yourself to beat your highest score</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="bakery-divider"></div>
+
+            <section id="tips" class="mb-20">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-display font-bold mb-4 text-bakery-darkBrown inline-block relative">
+                        Tips & Strategies
+                        <img src="https://cdn-icons-png.flaticon.com/512/3075/3075918.png" alt="Croissant icon" class="w-10 h-10 absolute -top-6 -right-12 transform -rotate-12">
+                    </h2>
+                    <div class="flex justify-center">
+                        <div class="w-24 h-1 bg-bakery-crust rounded-full"></div>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="content-section hand-drawn">
+                        <div class="flex justify-center mb-4">
+                            <img src="https://cdn-icons-png.flaticon.com/512/5415/5415390.png" alt="Idea icon" class="w-12 h-12">
+                        </div>
+                        <h3 class="text-xl font-display font-medium mb-3 text-bakery-darkBrown text-center">Beginner Tips</h3>
+                        <p>Focus on creating simple merges first. Don't rush your moves and try to keep the board as empty as possible. Watch for block patterns and plan a few moves ahead.</p>
+                    </div>
+                    <div class="content-section hand-drawn">
+                        <div class="flex justify-center mb-4">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2041/2041643.png" alt="Chess icon" class="w-12 h-12">
+                        </div>
+                        <h3 class="text-xl font-display font-medium mb-3 text-bakery-darkBrown text-center">Advanced Tactics</h3>
+                        <p>Create multiple merges in sequence to trigger combo bonuses. Save special blocks for critical moments. Balance immediate merges with long-term strategic planning.</p>
+                    </div>
+                    <div class="content-section hand-drawn">
+                        <div class="flex justify-center mb-4">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3112/3112946.png" alt="Trophy icon" class="w-12 h-12">
+                        </div>
+                        <h3 class="text-xl font-display font-medium mb-3 text-bakery-darkBrown text-center">High Score Secrets</h3>
+                        <p>Prioritize creating higher-level merges before clearing lower ones. Look for opportunities to create chain reactions. Keep track of upcoming blocks to optimize your strategy.</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bakery-divider"></div>
+
+            <section class="content-section hand-drawn mb-20">
+                <h2 class="text-2xl font-display font-bold mb-6 text-bakery-darkBrown text-center">Why Players Love PancitoMerge</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <span class="vintage-check">✓</span>
+                                <span>Easy to learn, challenging to master gameplay</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="vintage-check">✓</span>
+                                <span>Satisfying merge mechanics and visual effects</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="vintage-check">✓</span>
+                                <span>Perfect for quick gaming sessions during breaks</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <span class="vintage-check">✓</span>
+                                <span>No download required - play instantly in your browser</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="vintage-check">✓</span>
+                                <span>Suitable for all ages with engaging progression</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="vintage-check">✓</span>
+                                <span>Regularly updated with new features and challenges</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="wood-texture text-bakery-cream py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between mb-8">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="text-2xl fancy-title mb-4 text-bakery-cream">PancitoMerge</h2>
+                    <p class="text-bakery-cream opacity-90 max-w-md">Experience the addictive gameplay of PancitoMerge on our platform. Challenge yourself with strategic puzzle-solving and compete for high scores!</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-lg font-display font-medium mb-3 text-bakery-cream">Game</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#play" class="footer-link">Play Now</a></li>
+                            <li><a href="#about" class="footer-link">About</a></li>
+                            <li><a href="#tips" class="footer-link">Tips & Tricks</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-display font-medium mb-3 text-bakery-cream">Legal</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                            <li><a href="#" class="footer-link">Terms of Service</a></li>
+                            <li><a href="#" class="footer-link">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-display font-medium mb-3 text-bakery-cream">Connect</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="footer-link">Contact Us</a></li>
+                            <li><a href="#" class="footer-link">Feedback</a></li>
+                            <li><a href="#" class="footer-link">Support</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-bakery-darkBrown border-opacity-20 text-center text-bakery-cream text-opacity-80">
+                <p>&copy; 2023 PancitoMerge.it.com. All rights reserved. PancitoMerge is a trademark of its respective owner.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize page with fade-in effect
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.classList.add('opacity-0');
+            setTimeout(function() {
+                document.body.classList.remove('opacity-0');
+                document.body.classList.add('transition-opacity', 'duration-1000', 'opacity-100');
+            }, 100);
+        });
+    </script>
+</body>
+</html>
